@@ -2,8 +2,12 @@ package com.kakaopay.homework.internetbanking;
 
 import com.kakaopay.homework.internetbanking.domain.Device;
 import com.kakaopay.homework.internetbanking.domain.InternetBankingInfo;
+import com.kakaopay.homework.internetbanking.domain.user.Role;
+import com.kakaopay.homework.internetbanking.domain.user.RoleType;
 import com.kakaopay.homework.internetbanking.repository.DeviceRepository;
 import com.kakaopay.homework.internetbanking.repository.InternetBankingInfoRepository;
+import com.kakaopay.homework.internetbanking.repository.user.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class AppRunner implements ApplicationRunner {
@@ -24,11 +29,8 @@ public class AppRunner implements ApplicationRunner {
 
     private final DeviceRepository deviceRepository;
     private final InternetBankingInfoRepository internetBankingInfoRepository;
+    private final RoleRepository roleRepository;
 
-    public AppRunner(DeviceRepository deviceRepository, InternetBankingInfoRepository internetBankingInfoRepository){
-        this.deviceRepository = deviceRepository;
-        this.internetBankingInfoRepository = internetBankingInfoRepository;
-    }
 
     public void loadFile() {
         try {
@@ -76,20 +78,10 @@ public class AppRunner implements ApplicationRunner {
             }
         }
 
-
-//        content.stream().map(data -> {
-//            deviceNameList.stream().map(deviceName -> {
-//
-//            })
-//        })
-
-//        String strDeviceName = content.remove(0);
-//        strDeviceName = strDeviceName.substring(strDeviceName.indexOf(',', strDeviceName.indexOf(',')+1)+1);
-//        String[] deviceNameArray = strDeviceName.split(",");
-//
-//        for(String deviceName : deviceNameArray){
-//            content.stream().map()
-//        }
+        Role userRole = new Role(RoleType.USER);
+        Role adminRole = new Role(RoleType.ADMIN);
+        roleRepository.save(userRole);
+        roleRepository.save(adminRole);
     }
 
     public List getUniqueDeviceIdList(int numberLength, int numberCount) throws Exception{

@@ -30,3 +30,7 @@ spring:
     console:
       enabled: true
       path: /console
+
+app:
+  jwtSecret: HS512SecretKey
+  jwtExpirationInMs: 600000 #10분
