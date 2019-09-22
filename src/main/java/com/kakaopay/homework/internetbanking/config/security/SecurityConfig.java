@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final CustomUserDetailsService customUserDetailsService;
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    //private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
@@ -91,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
                     .antMatchers("/api/user/login", "/api/user/signup", "/api/user/refresh/token")
                         .permitAll()
+                    .antMatchers("/api/internetbanking/info/**")
+                        .permitAll()
                     .antMatchers("/console/**")
                         .permitAll()
                     .anyRequest()
@@ -99,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .headers()
                     .frameOptions().disable()
                     .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                ;//.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 }

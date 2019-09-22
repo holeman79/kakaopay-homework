@@ -7,18 +7,18 @@ spring:
     platform: h2
     username: sa
     password:
-    initialization-mode: always
+    initialization-mode: never
     driverClassName: org.h2.Driver
   jpa:
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        show-sql: true
-        use_sql_comments: true
-        format_sql: true
+        show-sql: false
+        use_sql_comments: false
+        format_sql: false
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -33,4 +33,4 @@ spring:
 
 app:
   jwtSecret: HS512SecretKey
-  jwtExpirationInMs: 600000 #10분
+  jwtExpirationInMs: 60000000 #10분
