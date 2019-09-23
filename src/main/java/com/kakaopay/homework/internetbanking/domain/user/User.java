@@ -1,6 +1,9 @@
 package com.kakaopay.homework.internetbanking.domain.user;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "tb_user")
 public class User implements UserDetails {
     @Id
@@ -40,16 +44,25 @@ public class User implements UserDetails {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
+    @Builder
+    public User(Long id, String userId, String password, Role role, LocalDateTime createdDate){
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.role = role;
+        this.createdDate = createdDate;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-        list.add(new SimpleGrantedAuthority(role.getAuthority()));
-        return list;
+        //List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        //list.add(new SimpleGrantedAuthority(role.getAuthority()));
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userId;
     }
 
     @Override

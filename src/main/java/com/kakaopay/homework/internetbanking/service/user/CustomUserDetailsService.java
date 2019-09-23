@@ -9,6 +9,7 @@ import com.kakaopay.homework.internetbanking.repository.user.RoleRepository;
 import com.kakaopay.homework.internetbanking.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user;
     }
 
-    @Transactional
     public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("id : " + id));

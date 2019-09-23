@@ -7,6 +7,7 @@ import com.kakaopay.homework.internetbanking.exception.BusinessException;
 import com.kakaopay.homework.internetbanking.exception.ErrorCode;
 import com.kakaopay.homework.internetbanking.exception.UserDuplException;
 import com.kakaopay.homework.internetbanking.payload.LoginRequest;
+import com.kakaopay.homework.internetbanking.payload.SignupRequest;
 import com.kakaopay.homework.internetbanking.payload.UserResponse;
 import com.kakaopay.homework.internetbanking.repository.user.RoleRepository;
 import com.kakaopay.homework.internetbanking.repository.user.UserRepository;
@@ -64,14 +65,18 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
-    public boolean addUser(User user) {
-        if(userRepository.existsByUserId(user.getUserId()))
-            throw new UserDuplException(user.getUserId());
+    public boolean addUser(SignupRequest signupRequest) {
+        if(userRepository.existsByUserId(signupRequest.getUserId()))
+            throw new UserDuplException(signupRequest.getUserId());
 
         // Creating user's account
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreatedDate(LocalDateTime.now());
-        user.setRole(roleRepository.findByName(RoleType.USER).orElse(null));
+        User user = User.builder()
+                .userId(signupRequest.getUserId())
+                .password(passwordEncoder.encode(signupRequest.getPassword()))
+                .createdDate(LocalDateTime.now())
+                .role(roleRepository.findByName(RoleType.USER).orElse(null))
+                .build();
+
         User result = userRepository.save(user);
 
         String accessToken = tokenProvider.generateToken(result.getId());

@@ -7,12 +7,13 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Device{
+public class Device implements Serializable {
     @Id
     private String deviceId;
 

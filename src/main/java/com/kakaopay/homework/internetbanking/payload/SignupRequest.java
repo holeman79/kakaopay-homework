@@ -12,8 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LoginRequest implements Serializable {
-
+public class SignupRequest implements Serializable {
     @NotBlank
     @Size(max = 20)
     private String userId;
@@ -23,9 +22,8 @@ public class LoginRequest implements Serializable {
     private String password;
 
     @Builder
-    public LoginRequest(String userId, String password){
+    public SignupRequest(String userId, String password){
         this.userId = userId;
         this.password = password;
     }
-
 }

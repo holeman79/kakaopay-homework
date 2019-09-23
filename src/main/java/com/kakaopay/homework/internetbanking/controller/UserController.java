@@ -2,6 +2,7 @@ package com.kakaopay.homework.internetbanking.controller;
 
 import com.kakaopay.homework.internetbanking.domain.user.User;
 import com.kakaopay.homework.internetbanking.payload.LoginRequest;
+import com.kakaopay.homework.internetbanking.payload.SignupRequest;
 import com.kakaopay.homework.internetbanking.payload.UserResponse;
 import com.kakaopay.homework.internetbanking.repository.user.UserRepository;
 import com.kakaopay.homework.internetbanking.service.user.CustomUserDetailsService;
@@ -28,9 +29,9 @@ public class UserController {
         return new ResponseEntity<>(userService.login(loginRequest), HttpStatus.OK);
     }
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody User user) {
-        if(userService.addUser(user)) return new ResponseEntity<>(HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        if(userService.addUser(signupRequest)) return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.METHOD_FAILURE);
     }
 
     @GetMapping("/refresh/token")
