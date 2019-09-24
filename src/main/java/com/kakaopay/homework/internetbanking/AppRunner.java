@@ -32,9 +32,10 @@ public class AppRunner implements ApplicationRunner {
     private final RoleRepository roleRepository;
 
 
-    public void loadFile() {
+    public void loadFile(String filePath) {
         try {
-            File csv = new File("/home/holeman/Desktop/kakaopay_hw/" + fileName);
+            //File csv = new File("/home/holeman/Desktop/kakaopay_hw/" + fileName);
+            File csv = new File(filePath);
             BufferedReader br = new BufferedReader(new FileReader(csv));
             String line = "";
             if((line = br.readLine()) != null) {
@@ -110,9 +111,12 @@ public class AppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        //String[] arguments = args.getSourceArgs();
-        //if(arguments.length > 0)
-        loadFile();
-        saveData();
+        String[] arguments = args.getSourceArgs();
+        //String path = (arguments.length > 0) ? arguments[0] : "/home/holeman/Desktop/kakaopay_hw/" + fileName;
+        if(arguments.length > 0){
+            loadFile(arguments[0]);
+            saveData();
+        }
+
     }
 }

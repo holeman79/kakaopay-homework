@@ -162,7 +162,8 @@ public class InternetBankingControllerTest {
         given(internetBankingInfoRepository.findTop1ByDeviceDeviceIdOrderByRateDesc("DIS376298")).willReturn(expected);
 
         //when
-        final ResultActions actions = mvc.perform(get("/api/internetbanking/info/device/{deviceId}", "DIS376298")
+        final ResultActions actions = mvc.perform(get("/api/internetbanking/info/device")
+                .param("deviceId", "DIS376298")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print());
 

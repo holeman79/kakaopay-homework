@@ -8,10 +8,7 @@ import com.kakaopay.homework.internetbanking.service.InternetBankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,14 +39,14 @@ public class InternetBankingController {
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/device/{deviceId}")
-    public ResponseEntity<InternetBankingInfo> getTopRateDeviceByDeviceId(@PathVariable String deviceId){
+    @GetMapping("/device")
+    public ResponseEntity<InternetBankingInfo> getTopRateDeviceByDeviceId(@RequestParam(name="deviceId") String deviceId){
         InternetBankingInfo result = internetBankingInfoRepository.findTop1ByDeviceDeviceIdOrderByRateDesc(deviceId);
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/prediction/next/year/rate/{deviceId}")
-    public ResponseEntity<InternetBankingInfo> getPredictionNextYearRateByDeviceId(@PathVariable String deviceId){
+    @GetMapping("/prediction/next/year/rate")
+    public ResponseEntity<InternetBankingInfo> getPredictionNextYearRateByDeviceId(@RequestParam(name="deviceId") String deviceId){
         InternetBankingInfo result = internetBankingService.getPredictionNextYearRateByDeviceId(deviceId);
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }

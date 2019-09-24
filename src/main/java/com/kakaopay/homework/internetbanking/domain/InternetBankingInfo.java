@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @IdClass(InternetBankingInfoId.class)
-public class InternetBankingInfo {
+public class InternetBankingInfo implements Serializable {
 
     @Id
     @ManyToOne
