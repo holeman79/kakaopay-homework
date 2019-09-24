@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,9 +80,9 @@ public class UserServiceImpl implements UserService {
 
         User result = userRepository.save(user);
 
-        String accessToken = tokenProvider.generateToken(result.getId());
+        String accessToken = tokenProvider.generateToken(Optional.ofNullable(result).map(User::getId).orElse(null));
         log.info("token: {}", accessToken);
-        return (result == null);
+        return (result != null);
     }
 
     public String refreshToken(HttpServletRequest request){

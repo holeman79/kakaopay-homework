@@ -79,8 +79,7 @@ public class UserControllerTest {
 
         //when
         final ResultActions actions = mvc.perform(post("/api/user/signup")
-                .content("{\"userId\":\"holeman79\",\"password\":\"12345\"}")
-                //.content(requestJson)
+                .content(requestJson)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(print());
 

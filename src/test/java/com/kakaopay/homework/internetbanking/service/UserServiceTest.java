@@ -66,7 +66,6 @@ public class UserServiceTest extends MockTest {
         String accessToken = tokenProvider.generateToken(1L);
 
         User user = User.builder()
-                .id(1L)
                 .userId(signupRequest.getUserId())
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .createdDate(LocalDateTime.now())
@@ -84,7 +83,7 @@ public class UserServiceTest extends MockTest {
 
         //then
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(true);
+        assertThat(result).isEqualTo(false);
 
     }
 
