@@ -24,12 +24,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserServiceTest extends MockTest {
 
@@ -62,35 +60,30 @@ public class UserServiceTest extends MockTest {
         final Role role = new Role();
         role.setId(1L);
         role.setName(RoleType.USER);
-        String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
-        String accessToken = tokenProvider.generateToken(1L);
 
         User user = User.builder()
                 .userId(signupRequest.getUserId())
-                .password(passwordEncoder.encode(signupRequest.getPassword()))
+                .password(signupRequest.getPassword())
                 .createdDate(LocalDateTime.now())
-                .role(roleRepository.findByName(RoleType.USER).orElse(null))
+                .role(role)
                 .build();
 
-        given(userRepository.existsByUserId(any())).willReturn(false);
+        given(userRepository.existsByUserId(signupRequest.getUserId())).willReturn(false);
         given(roleRepository.findByName(RoleType.USER)).willReturn(Optional.of(role));
-        given(userRepository.save(user)).willReturn(user);
-        given(passwordEncoder.encode(signupRequest.getPassword())).willReturn(encodedPassword);
-        given(tokenProvider.generateToken(1L)).willReturn(accessToken);
+        given(userRepository.save(any())).willReturn(user);
 
         //when
         boolean result = userService.addUser(signupRequest);
 
         //then
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(false);
+        assertThat(result, is(true));
 
     }
 
     @Test
     public void 로그인_테스트() throws Exception {
-
-        final SignupRequest signupRequest = SignupRequest.builder()
+        //given
+        final LoginRequest loginRequest = LoginRequest.builder()
                 .userId("holeman79")
                 .password("12345")
                 .build();
@@ -99,32 +92,31 @@ public class UserServiceTest extends MockTest {
         role.setId(1L);
         role.setName(RoleType.USER);
 
-        String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
-
-        given(userRepository.existsByUserId(any())).willReturn(false);
-        given(roleRepository.findByName(RoleType.USER)).willReturn(Optional.of(role));
-        given(passwordEncoder.encode(signupRequest.getPassword())).willReturn(encodedPassword);
-
-        boolean result = userService.addUser(signupRequest);
-
-        final LoginRequest loginRequest = LoginRequest.builder()
-                .userId("holeman79")
-                .password("12345")
-                .build();
-
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserId(),
-                loginRequest.getPassword()));
-
-        given(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserId(),
-                                                    loginRequest.getPassword())))
-                .willReturn(authentication);
-        given(authentication.getPrincipal()).willReturn(User.builder()
+        final User user = User.builder()
+                .id(79L)
                 .userId(loginRequest.getUserId())
-                .password(passwordEncoder.encode(loginRequest.getPassword()))
+                .password(loginRequest.getPassword())
                 .createdDate(LocalDateTime.now())
                 .role(role)
-                .build());
+                .build();
 
+        final String anyJwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTY5Mjg1Nzg0LCJleHAiOjE1NjkzNDU3ODR9.zS7ZDXUUAJ1FgY72v-7GNzae5ggFe3SdxqK3axWFcrbOMdTWjT-GArWeKyxGXwgjXB7K9VTPe_H8_lgk1fqRtA";
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
+        given(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUserId(),
+                        loginRequest.getPassword()))).willReturn(authentication);
+
+        given(tokenProvider.generateToken(any())).willReturn(anyJwt);
+
+        //when
+        UserResponse result = userService.login(loginRequest);
+
+        //then
+        assertThat(result.getId(), is(user.getId()));
+        assertThat(result.getUserId(), is(user.getUserId()));
+        assertThat(result.getAccessToken(), is(anyJwt));
+        assertThat(result.getRole(), is(role));
+        assertThat(result.getTokenType(), is("Bearer"));
     }
-
 }

@@ -18,6 +18,7 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     public String generateToken(Long id) {
+        if(jwtSecret == null) jwtSecret = "HS512SecretKey";
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
