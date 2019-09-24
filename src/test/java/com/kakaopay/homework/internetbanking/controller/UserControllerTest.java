@@ -73,7 +73,7 @@ public class UserControllerTest {
                                             .password("12345")
                                             .build();
 
-        given(userService.addUser(signupRequest)).willReturn(true);
+        given(userService.addUser(any())).willReturn(true);
 
         String requestJson = ow.writeValueAsString(signupRequest);
 
@@ -84,7 +84,7 @@ public class UserControllerTest {
                 .andDo(print());
 
         //then
-        actions.andExpect(status().isMethodFailure());
+        actions.andExpect(status().isOk());
     }
 
     @Test
@@ -101,13 +101,13 @@ public class UserControllerTest {
 
         String accessToken = tokenProvider.generateToken(1L);
         final UserResponse userResponse = UserResponse.builder()
-                .id(1L)
+                .id(85L)
                 .userId("holeman79")
                 .accessToken(accessToken)
                 .role(role)
                 .build();
 
-        given(userService.login(loginRequest)).willReturn(userResponse);
+        given(userService.login(any())).willReturn(userResponse);
 
         String requestJson = ow.writeValueAsString(loginRequest);
 
@@ -118,6 +118,10 @@ public class UserControllerTest {
                 .andDo(print());
 
         //then
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(85L))
+                .andExpect(jsonPath("$.userId").value("holeman79"))
+                .andExpect(jsonPath("$.accessToken").value(accessToken))
+                .andExpect(jsonPath("$.role.name").value("USER"));
     }
 }
