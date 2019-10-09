@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LogisticRegression {
+public class LinearRegression {
 
     public static Double predictForValue(List<Integer> x, List<Double> y , int predictForDependentVariable) {
         if (x.size() != y.size())

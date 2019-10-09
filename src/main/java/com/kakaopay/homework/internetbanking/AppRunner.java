@@ -96,9 +96,9 @@ public class AppRunner implements ApplicationRunner {
     }
 
     public static String getRandomNumString(int size){
-        String result = new String();
-        for(int i=0; i<size; i++) result += new Random().nextInt(10);
-        return "DIS" + result;
+        StringBuffer result = new StringBuffer().append("DIS");
+        for(int i=0; i<size; i++) result.append(new Random().nextInt(10));
+        return result.toString();
     }
 
     public void checkData(){
@@ -112,7 +112,7 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         String[] arguments = args.getSourceArgs();
-        //String path = (arguments.length > 0) ? arguments[0] : "/home/holeman/Desktop/kakaopay_hw/" + fileName;
+        String path = (arguments.length > 0) ? arguments[0] : "/Applications/web/" + fileName;
         if(arguments.length > 0){
             loadFile(arguments[0]);
             saveData();

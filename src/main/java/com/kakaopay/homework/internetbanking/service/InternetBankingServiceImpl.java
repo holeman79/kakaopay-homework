@@ -3,7 +3,7 @@ package com.kakaopay.homework.internetbanking.service;
 import com.kakaopay.homework.internetbanking.domain.Device;
 import com.kakaopay.homework.internetbanking.domain.InternetBankingInfo;
 import com.kakaopay.homework.internetbanking.repository.InternetBankingInfoRepository;
-import com.kakaopay.homework.internetbanking.util.LogisticRegression;
+import com.kakaopay.homework.internetbanking.util.LinearRegression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class InternetBankingServiceImpl implements InternetBankingService{
             deviceName = rateListByDevice.get(0).getDevice().getDeviceName();
         }
 
-        Double prediction = LogisticRegression.predictForValue(years, rates, nextYear);
+        Double prediction = LinearRegression.predictForValue(years, rates, nextYear);
         prediction = prediction > 100 ? 100.0 : (prediction < 0 ? 0 : prediction);
         prediction = (double)Math.round(prediction * 10) / 10;
         InternetBankingInfo result = InternetBankingInfo.builder()

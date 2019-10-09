@@ -3,14 +3,12 @@ package com.kakaopay.homework.internetbanking.service;
 import com.kakaopay.homework.internetbanking.domain.Device;
 import com.kakaopay.homework.internetbanking.domain.InternetBankingInfo;
 import com.kakaopay.homework.internetbanking.repository.InternetBankingInfoRepository;
-import com.kakaopay.homework.internetbanking.util.LogisticRegression;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

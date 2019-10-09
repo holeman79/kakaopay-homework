@@ -10,13 +10,13 @@ spring:
     initialization-mode: never
     driverClassName: org.h2.Driver
   jpa:
-    show-sql: false
+    show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate:
-        show-sql: false
+        show-sql: true
         use_sql_comments: false
         format_sql: false
   jackson:

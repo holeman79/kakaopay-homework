@@ -39,14 +39,14 @@ public class InternetBankingController {
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/device")
-    public ResponseEntity<InternetBankingInfo> getTopRateDeviceByDeviceId(@RequestParam(name="deviceId") String deviceId){
+    @GetMapping("/device/{deviceId}")
+    public ResponseEntity<InternetBankingInfo> getTopRateDeviceByDeviceId(@PathVariable String deviceId){
         InternetBankingInfo result = internetBankingInfoRepository.findTop1ByDeviceDeviceIdOrderByRateDesc(deviceId);
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/prediction/next/year/rate")
-    public ResponseEntity<InternetBankingInfo> getPredictionNextYearRateByDeviceId(@RequestParam(name="deviceId") String deviceId){
+    @GetMapping("/prediction/next/year/rate/{deviceId}")
+    public ResponseEntity<InternetBankingInfo> getPredictionNextYearRateByDeviceId(@PathVariable String deviceId){
         InternetBankingInfo result = internetBankingService.getPredictionNextYearRateByDeviceId(deviceId);
         return new ResponseEntity<InternetBankingInfo>(result, HttpStatus.OK);
     }
